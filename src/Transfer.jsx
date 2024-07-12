@@ -5,16 +5,23 @@ export default function Transfer({ currentAcc, accounts, onSetCurrentAcc }) {
   const [amount, setAmount] = useState(0);
   function handleTransfer(e) {
     e.preventDefault();
-    const acc = accounts.some((acc) => acc.userName === transferTo)
-      ? accounts.find((account) => account.userName === transferTo)
-      : null;
+    console.log(accounts);
+    if (!accounts.some((acc) => acc.userName === transferTo)) {
+      alert("Account does not exist!!");
+    }
+    const acc = accounts.find((account) => account.userName === transferTo);
     if (acc.userName !== currentAcc.userName) {
       const movs = currentAcc.movements;
       const totalBalance = movs.reduce((mov, acc) => mov + acc, 0);
       if (amount < totalBalance) {
-        acc.movements.push(Number(amount));
+        acc.movements.unshift(Number(amount));
+        acc.movementsDates.unshift(new Date().toISOString());
         const accCopy = { ...currentAcc };
-        accCopy.movements = [...accCopy.movements, Number(-amount)];
+        accCopy.movements = [Number(-amount), ...accCopy.movements];
+        accCopy.movementsDates = [
+          new Date().toISOString(),
+          ...accCopy.movementsDates,
+        ];
         onSetCurrentAcc(accCopy);
       } else {
         alert("Insufficient Balance");

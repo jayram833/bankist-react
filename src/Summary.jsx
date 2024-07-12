@@ -14,10 +14,12 @@ export default function Summary({ currentAcc }) {
       <p className="summary__value summary__value--in">₹{creditedAmt}</p>
       <p className="summary__label">Out</p>
       <p className="summary__value summary__value--out">
-        ₹{Math.abs(debitedAmt)}
+        ₹{Math.abs(debitedAmt.toFixed(2))}
       </p>
       <p className="summary__label">Interest</p>
-      <p className="summary__value summary__value--interest">₹{interestAmt}</p>
+      <p className="summary__value summary__value--interest">
+        ₹{interestAmt.toFixed(2)}
+      </p>
       <button className="btn--sort">↓ SORT</button>
     </div>
   );

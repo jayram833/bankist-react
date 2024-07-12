@@ -7,7 +7,11 @@ export default function Loan({ currentAcc, onSetCurrentAcc }) {
     const minDepositAmount = 0.9 * loanAmt;
     if (currentAcc.movements.some((mov) => mov >= minDepositAmount)) {
       const accCopy = { ...currentAcc };
-      accCopy.movements = [...accCopy.movements, Number(loanAmt)];
+      accCopy.movements = [Number(loanAmt), ...accCopy.movements];
+      accCopy.movementsDates = [
+        new Date().toISOString(),
+        ...accCopy.movementsDates,
+      ];
       setTimeout(() => {
         onSetCurrentAcc(accCopy);
         setLoanAmt(0);

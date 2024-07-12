@@ -4,13 +4,13 @@ export default function Movements({ currentAcc }) {
   return (
     <div className="movements">
       {currentAcc.movements.map((mov, i) => (
-        <Movement mov={mov} key={i + 1} ind={i + 1} />
+        <Movement mov={mov} key={i + 1} ind={i + 1} currentAcc={currentAcc} />
       ))}
     </div>
   );
 }
 
-function Movement({ mov, ind }) {
+function Movement({ mov, ind, currentAcc }) {
   return (
     <div className="movements__row">
       <div
@@ -18,7 +18,9 @@ function Movement({ mov, ind }) {
       >
         {ind} {mov > 0 ? "deposit" : "withdrawal"}
       </div>
-      <div className="movements__date">3 days ago</div>
+      <div className="movements__date">
+        {new Date(currentAcc.movementsDates[ind - 1]).toDateString()}
+      </div>
       <div className="movements__value">₹{mov}</div>
     </div>
   );

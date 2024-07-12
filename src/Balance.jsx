@@ -7,7 +7,7 @@ export default function Balance({ currentAcc }) {
       <div>
         <p className="balance__label">Current balance</p>
         <p className="balance__date">
-          As of <span className="date">05/03/2037</span>
+          As of <span className="date">{new Date().toDateString()}</span>
         </p>
       </div>
       <p className="balance__value">₹{totalBalance}</p>

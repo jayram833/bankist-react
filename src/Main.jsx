@@ -35,7 +35,7 @@ export default function Main({
         onSetCurrentAcc={onSetCurrentAcc}
         onSetIsLoggedIn={onSetIsLoggedIn}
       />
-      <Logout />
+      <Logout onSetIsLoggedIn={onSetIsLoggedIn} />
     </main>
   );
 }
