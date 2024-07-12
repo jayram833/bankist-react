@@ -47,7 +47,6 @@ const account2 = {
 const accounts = [account1, account2];
 
 export default function App() {
-  // const [movements, setMovements] = useState(accounts[0].movements);
   const [currentAcc, setCurrentAcc] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (

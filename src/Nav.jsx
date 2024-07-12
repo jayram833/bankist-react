@@ -20,7 +20,6 @@ export default function Nav({
       <LoginForm
         accounts={accounts}
         onSetCurrentAcc={onSetCurrentAcc}
-        currentAcc={currentAcc}
         onSetIsLoggedIn={onSetIsLoggedIn}
         isLoggedIn={isLoggedIn}
       />
@@ -33,13 +32,7 @@ export default function Nav({
   );
 }
 
-function LoginForm({
-  accounts,
-  currentAcc,
-  onSetCurrentAcc,
-  onSetIsLoggedIn,
-  isLoggedIn,
-}) {
+function LoginForm({ accounts, onSetCurrentAcc, onSetIsLoggedIn, isLoggedIn }) {
   const [userName, setUserName] = useState("");
   const [pin, setPin] = useState("");
 
@@ -81,7 +74,6 @@ function LoginForm({
         value={userName}
         onChange={(e) => setUserName(e.target.value)}
       />
-      {/* In practice, use type="password" */}
       <input
         type="text"
         placeholder="PIN"

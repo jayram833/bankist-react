@@ -5,10 +5,8 @@ import Transfer from "./Transfer";
 import Loan from "./Loan";
 import Close from "./Close";
 import Logout from "./Logout";
-import { useState } from "react";
 
 export default function Main({
-  movements,
   isLoggedIn,
   currentAcc,
   accounts,

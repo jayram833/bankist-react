@@ -5,7 +5,10 @@ export default function Loan({ currentAcc, onSetCurrentAcc }) {
   function handleLoan(e) {
     e.preventDefault();
     const minDepositAmount = 0.9 * loanAmt;
-    if (currentAcc.movements.some((mov) => mov >= minDepositAmount)) {
+    if (
+      loanAmt > 0 &&
+      currentAcc.movements.some((mov) => mov >= minDepositAmount)
+    ) {
       const accCopy = { ...currentAcc };
       accCopy.movements = [Number(loanAmt), ...accCopy.movements];
       accCopy.movementsDates = [
