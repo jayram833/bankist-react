@@ -13,6 +13,7 @@ export default function Main({
   currentAcc,
   accounts,
   onSetCurrentAcc,
+  onSetIsLoggedIn,
 }) {
   if (!isLoggedIn) {
     return null;
@@ -28,7 +29,12 @@ export default function Main({
         onSetCurrentAcc={onSetCurrentAcc}
       />
       <Loan currentAcc={currentAcc} onSetCurrentAcc={onSetCurrentAcc} />
-      <Close />
+      <Close
+        currentAcc={currentAcc}
+        accounts={accounts}
+        onSetCurrentAcc={onSetCurrentAcc}
+        onSetIsLoggedIn={onSetIsLoggedIn}
+      />
       <Logout />
     </main>
   );

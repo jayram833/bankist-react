@@ -52,6 +52,7 @@ export default function App() {
         currentAcc={currentAcc}
         accounts={accounts}
         onSetCurrentAcc={setCurrentAcc}
+        onSetIsLoggedIn={setIsLoggedIn}
       />
     </div>
   );
