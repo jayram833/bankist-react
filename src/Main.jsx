@@ -27,7 +27,7 @@ export default function Main({
         accounts={accounts}
         onSetCurrentAcc={onSetCurrentAcc}
       />
-      <Loan />
+      <Loan currentAcc={currentAcc} onSetCurrentAcc={onSetCurrentAcc} />
       <Close />
       <Logout />
     </main>
