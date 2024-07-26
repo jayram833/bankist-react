@@ -1,4 +1,4 @@
-name: React app deployment to GCS
+name: React App deployment to GCS
 
 on:
   push:
@@ -7,26 +7,46 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+        continue-on-error: false
 
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
         with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          project_id: ${{ secrets.GCP_SA_EMAIL }}
           service_account_key: ${{ secrets.GCP_SA_KEY }}
+          continue-on-error: false
 
-      - name: Upload files to GCS
-        env:
-          GCP_BUCKET_NAME: ${{ secrets.GCP_BUCKET_NAME }}
+      - name: Authenticate to Google Cloud
+        run: |
+          echo "Authenticating to Google Cloud..."
+          gcloud auth activate-service-account --key-file="${{ secrets.GCP_SA_KEY }}"
+          if [ $? -ne 0 ]; then
+            echo "Error: Google Cloud authentication failed."
+            exit 1
+          fi
+        continue-on-error: false
+
+      - name: Create GCS directory
         run: |
           VERSION=${GITHUB_REF#refs/tags/}
-          echo "Uploading files to GCS... ${VERSION}"
-          gsutil -m cp -r ./src/* gs://${GCP_BUCKET_NAME}/${VERSION}/
+          echo "Creating GCS directory ${VERSION}..."
+          gsutil mb -p ${{ secrets.GCP_SA_EMAIL }} gs://jayram-test/${VERSION}
           if [ $? -ne 0 ]; then
             echo "Error: File upload to GCS failed."
             exit 1
           fi
+        continue-on-error: false
+
+      - name: Upload files to GCS
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/}
+          gsutil -m cp -r ./* gs://jayram-test/${VERSION}/
+        continue-on-error: false
