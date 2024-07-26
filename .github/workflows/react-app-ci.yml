@@ -22,7 +22,7 @@ jobs:
       - name: Authenticate to Google Cloud
         run: |
           echo "Authenticating to Google Cloud..."
-          gcloud auth activate-service-account --key-file="${{ secrets.GCP_SA_KEY }}"
+          gcloud auth activate-service-account github-actions-gcs@gcs-test-430622.iam.gserviceaccount.com --key-file=${{ secrets.GCP_SA_KEY }}
 
       - name: Upload files to GCS
         run: |
