@@ -1,31 +1,57 @@
-name: React App CI
+name: Fit deployment to GCS
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    tags:
+      - "[0-9][0-9][0-9][0-9][0-9][0-9][0-9]" # fit version number
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  deploy:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        continue-on-error: false
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '20'
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          continue-on-error: false
 
-    - name: Install dependencies
-      run: npm install
+      - name: Authenticate to Google Cloud
+        run: |
+          echo "Authenticating to Google Cloud..."
+          gcloud auth activate-service-account --key-file="${{ secrets.GCP_SA_KEY }}"
+          if [ $? -ne 0 ]; then
+            echo "Error: Google Cloud authentication failed."
+            exit 1
+          fi
+        continue-on-error: false
 
-    # - name: Run tests
-    #   run: npm test
+      - name: Create GCS directory
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/}
+          echo "Creating GCS directory ${VERSION}..."
+          gsutil mb -p ${{ secrets.GCP_PROJECT_ID }} gs://${{ secrets.GCP_BUCKET_NAME }}/${VERSION}
+          if [ $? -ne 0 ]; then
+            echo "Error: File upload to GCS failed."
+            exit 1
+          fi
+        continue-on-error: false
 
-    # - name: Build React app
-    #   run: npm run build
+      - name: Upload files to GCS
+        run: |
+          echo "Uploding files to GCS...."
+          VERSION=${GITHUB_REF#refs/tags/}
+          gsutil -m cp -r ./src/* gs://${{ secrets.GCP_BUCKET_NAME }}/${VERSION}/
+          if [ $? -ne 0 ]; then
+            echo "Error: File upload to GCS failed."
+            exit 1
+          fi
+        continue-on-error: false
