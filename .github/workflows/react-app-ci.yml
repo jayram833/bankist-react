@@ -24,7 +24,7 @@ jobs:
       - name: Authenticate to Google Cloud
         run: |
           echo "Authenticating to Google Cloud..."
-          gcloud auth activate-service-account --key-file="${{ secrets.GCP_SA_KEY }}"
+          gcloud auth activate-service-account --key-file=${{ secrets.GCP_SA_KEY }}
           if [ $? -ne 0 ]; then
             echo "Error: Google Cloud authentication failed."
             exit 1
