@@ -1,4 +1,4 @@
-name: Fit deployment to GCS
+name: React app deployment to GCS
 
 on:
   push:
@@ -37,7 +37,7 @@ jobs:
           GCP_BUCKET_NAME: ${{ secrets.GCP_BUCKET_NAME }}
         run: |
           VERSION=${GITHUB_REF#refs/tags/}
-          echo "Uploading files to GCS..."
+          echo "Uploading files to GCS...${VERSION}"
           gsutil -m cp -r ./src/* gs://${GCP_BUCKET_NAME}/${VERSION}/
           if [ $? -ne 0 ]; then
             echo "Error: File upload to GCS failed."
