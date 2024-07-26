@@ -18,7 +18,7 @@ jobs:
         with:
           service_account_email: ${{ secrets.GCP_SA_EMAIL }}
           service_account_key: ${{ secrets.GCP_SA_KEY }}
-          project_id: swift-radar-267405
+          project_id: gcs-test-430622
 
       - name: Upload files to GCS
         run: |
