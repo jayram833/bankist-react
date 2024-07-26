@@ -20,33 +20,12 @@ jobs:
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
         with:
-          project_id: ${{ secrets.GCP_SA_EMAIL }}
+          service_account_email: ${{ secrets.GCP_SA_EMAIL }}
           service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: swift-radar-267405
           continue-on-error: false
-
-      - name: Authenticate to Google Cloud
-        run: |
-          echo "Authenticating to Google Cloud..."
-          gcloud auth activate-service-account --key-file="${{ secrets.GCP_SA_KEY }}"
-          if [ $? -ne 0 ]; then
-            echo "Error: Google Cloud authentication failed."
-            exit 1
-          fi
-        continue-on-error: false
-
-      - name: Create GCS directory
-        run: |
-          VERSION=${GITHUB_REF#refs/tags/}
-          echo "Creating GCS directory ${VERSION}..."
-          gsutil mb -p ${{ secrets.GCP_SA_EMAIL }} gs://jayram-test/${VERSION}
-          if [ $? -ne 0 ]; then
-            echo "Error: File upload to GCS failed."
-            exit 1
-          fi
-        continue-on-error: false
 
       - name: Upload files to GCS
         run: |
-          VERSION=${GITHUB_REF#refs/tags/}
-          gsutil -m cp -r ./* gs://jayram-test/${VERSION}/
+          gsutil -m cp -r ./* gs://jayram-test/*
         continue-on-error: false
