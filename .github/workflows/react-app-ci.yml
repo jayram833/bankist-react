@@ -25,8 +25,8 @@ jobs:
           GCP_BUCKET_NAME: ${{ secrets.GCP_BUCKET_NAME }}
         run: |
           VERSION=${GITHUB_REF#refs/tags/}
-          echo "Creating GCS directory ${VERSION}...${GCP_PROJECT_ID}"
-          gsutil mb -p ${GCP_PROJECT_ID} gs://jayram-test/testing-bucket
+          echo "Creating GCS directory ${VERSION}..."
+          gsutil mb -p ${GCP_PROJECT_ID} gs://${GCP_BUCKET_NAME}/${VERSION}
           if [ $? -ne 0 ]; then
             echo "Error: Failed to create GCS directory."
             exit 1
