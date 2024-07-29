@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
@@ -16,13 +16,14 @@ jobs:
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
         with:
-          project_id: gcs-test-430622
+          service_account_email: ${{ secrets.GCP_SA_EMAIL }}
           service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: gcs-test-430622
 
-      - name: Authenticate to Google Cloud
-        run: |
-          echo "Authenticating to Google Cloud..."
-          gcloud auth activate-service-account --key-file=${{ secrets.GCP_SA_KEY }}
+      # - name: Authenticate to Google Cloud
+      #   run: |
+      #     echo "Authenticating to Google Cloud..."
+      #     gcloud auth activate-service-account --key-file=${{ secrets.GCP_SA_KEY }}
 
       - name: Upload files to GCS
         run: |
