@@ -21,17 +21,17 @@ jobs:
           project_id: gcs-test-430622
 
       - name: Authenticate to Google Cloud
-          run: |
-            echo "Authenticating to Google Cloud..."
-            echo '${{ secrets.GCP_SA_KEY }}' > /tmp/gcp-key.json
-            
-            # Debugging: Print the file content
-            cat /tmp/gcp-key.json
-            
-            gcloud auth activate-service-account --key-file=/tmp/gcp-key.json
-            
-            # Cleanup
-            rm /tmp/gcp-key.json
+        run: |
+          echo "Authenticating to Google Cloud..."
+          echo '${{ secrets.GCP_SA_KEY }}' > /tmp/gcp-key.json
+
+          # Debugging: Print the file content
+          cat /tmp/gcp-key.json
+
+          gcloud auth activate-service-account --key-file=/tmp/gcp-key.json
+
+          # Cleanup
+          rm /tmp/gcp-key.json
 
       - name: Upload files to GCS
         run: |
