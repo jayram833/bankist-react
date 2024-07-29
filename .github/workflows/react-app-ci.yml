@@ -32,7 +32,7 @@ jobs:
 
       - name: Print readme.md
         run: |
-          car README.md
+          cat README.md
 
       - name: Upload files to GCS
         run: |
