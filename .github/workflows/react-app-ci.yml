@@ -36,4 +36,5 @@ jobs:
 
       - name: Upload files to GCS
         run: |
-          gsutil -m cp -r ./src/* gs://github-action-test/
+          VERSION=${GITHUB_REF#refs/tags/}
+          gsutil -m cp -r ./src/* gs://github-action-test/${VERSION}/
