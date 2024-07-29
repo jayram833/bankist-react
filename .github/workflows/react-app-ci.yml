@@ -20,6 +20,9 @@ jobs:
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           project_id: gcs-test-430622
 
+      - name: Configure gcloud CLI
+        run: gcloud config set project gcs-test-430622
+
       # - name: Authenticate to Google Cloud
       #   run: |
       #     echo "Authenticating to Google Cloud..."
