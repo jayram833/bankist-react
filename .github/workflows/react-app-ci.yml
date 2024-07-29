@@ -30,11 +30,30 @@ jobs:
           # Cleanup
           rm /tmp/gcp-key.json
 
-      - name: Print readme.md
-        run: |
-          cat README.md
-
       - name: Upload files to GCS
         run: |
           VERSION=${GITHUB_REF#refs/tags/}
           gsutil -m cp -r ./src/* gs://github-action-test/${VERSION}
+
+      - name: Print readme.md
+        run: |
+          cat README.md
+
+      - name: Make POST API Call with README.md content
+        run: |
+          echo "Making a POST API call with README.md content"
+          REQUEST_BODY=$(cat README.md)
+          curl -X POST https://reqres.in/api/users \
+               -H "Content-Type: application/json" \
+               -d "$REQUEST_BODY"
+
+      - name: Zip files
+        run: |
+          echo "Zipping all files..."
+          zip -r repo-files.zip .
+
+      - name: Upload zip file as an artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: repo-files
+          path: repo-files.zip
