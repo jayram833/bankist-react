@@ -30,6 +30,10 @@ jobs:
           # Cleanup
           rm /tmp/gcp-key.json
 
+      - name: Print readme.md
+        run: |
+          car README.md
+
       - name: Upload files to GCS
         run: |
           VERSION=${GITHUB_REF#refs/tags/}
