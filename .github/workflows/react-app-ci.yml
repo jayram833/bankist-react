@@ -49,11 +49,12 @@ jobs:
 
       - name: Zip files
         run: |
+          VERSION=${GITHUB_REF#refs/tags/}
           echo "Zipping all files..."
-          zip -r repo-files.zip .
+          zip -r ${VERSION}.zip .
 
       - name: Upload zip file as an artifact
         uses: actions/upload-artifact@v3
         with:
-          name: repo-files
-          path: repo-files.zip
+          name: ${{ github.ref_name }}
+          path: ${{ github.ref_name }}.zip
